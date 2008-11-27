@@ -19,6 +19,16 @@ $VERSION='0.1';
 sub public {
 	my ($server,$msg,$nick,$address,$target)=@_;
 
+	if($msg=~/^\.h[elp]?/) {
+		$server->command('/MSG '.$target.' Owner: I serve the lab. List of commands: .help, .topic, .weather');
+		$server->command('/MSG '.$target.' Help develop me @ http://github.com/wwwjscom/irc-bot/tree/master');
+	}
+	elsif ($msg =~ /^\.topic (.+)/i)
+	{
+		my $date = `date +"%k:%m %x"`;
+		$server->command('/topic '.$target.' "'. $1 . '" by ' . $nick . ' on ' . $date . '. Set the topic with ".topic"');
+	}
+
 	#if($msg =~ /sex/) {
 	#	$server->command('/MSG '.$target.' Oh yeah, talk dirty to me baby.  They dont call me squirt for no reason!');
 	#	$server->command('/action '.$target.' puts on the slow music and starts undressing '.$nick);
@@ -35,9 +45,6 @@ sub public {
 	#	my ($old)=/2\.4 version .* (2\.4\..+)/i;
 	#	$server->command('/MSG '.$target.' Linux: '.$stable.' ('.$old.')');
 	#}
-	if($msg=~/^\.h[elp]?/) {
-		$server->command('/MSG '.$target.' Owner: I serve the lab. List of commands: .h .help.  Help develop me @ http://github.com/wwwjscom/irc-bot/tree/master');
-	}
 	#/elsif($msg=~/^.c[heck]?/) {
 	#elsif($msg=~/^\.XXXXXXX$/) {
 
@@ -116,12 +123,12 @@ sub public {
 	##	}
 	##}
 
-	#if($msg =~/^\.w/) {
-	#	$server->command('/MSG '.$target.' Good Morning!  Lets take a look at the weather');
-	#	$_=get('http://rss.weather.com/weather/rss/local/60707?cm_ven=LWO&cm_cat=rss&par=LWO_rss');
-	#	my @array = split(/Tonight/);
-	#	$server->command('/MSG '.$target.' Tonight'.substr($array[1],0,-92));
-	#}
+	if($msg =~/^\.weather/) {
+		$server->command('/MSG '.$target.' Good Morning!  Lets take a look at the weather');
+		$_=get('http://rss.weather.com/weather/rss/local/60707?cm_ven=LWO&cm_cat=rss&par=LWO_rss');
+		my @array = split(/Tonight/);
+		$server->command('/MSG '.$target.' Tonight' . substr($array[1],0,-92));
+	}
 }
 
 sub private {
