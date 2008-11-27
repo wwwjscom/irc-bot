@@ -35,7 +35,7 @@ sub public {
 	#	my ($old)=/2\.4 version .* (2\.4\..+)/i;
 	#	$server->command('/MSG '.$target.' Linux: '.$stable.' ('.$old.')');
 	#}
-	elsif($msg=~/^\.h[elp]?/) {
+	if($msg=~/^\.h[elp]?/) {
 		$server->command('/MSG '.$target.' Owner: I serve the lab. List of commands: .h .help.  Help develop me @ http://github.com/wwwjscom/irc-bot/tree/master');
 	}
 	#/elsif($msg=~/^.c[heck]?/) {
