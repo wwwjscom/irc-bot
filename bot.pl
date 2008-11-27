@@ -1,3 +1,4 @@
+# Framework taken from someone else
 use Irssi;
 use strict;
 use vars qw($VERSION %IRSSI);
@@ -7,7 +8,7 @@ use LWP::Simple;
 $VERSION='0.1';
 
 %IRSSI=(
-	authors     =>  'Josh Kearney',
+	authors     =>  'IR Lab',
 	name        =>  'IRC Bot',
 	description =>  'Execute perl scripts through signal binds.',
 	license     =>  'GPL',
@@ -35,7 +36,7 @@ sub public {
 	#	$server->command('/MSG '.$target.' Linux: '.$stable.' ('.$old.')');
 	#}
 	elsif($msg=~/^\.h[elp]?/) {
-		$server->command('/MSG '.$target.' Owner: I serve the lab. List of commands: .h .help.  Help develop me @ ');
+		$server->command('/MSG '.$target.' Owner: I serve the lab. List of commands: .h .help.  Help develop me @ http://github.com/wwwjscom/irc-bot/tree/master');
 	}
 	#/elsif($msg=~/^.c[heck]?/) {
 	#elsif($msg=~/^\.XXXXXXX$/) {
