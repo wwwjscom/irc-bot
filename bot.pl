@@ -19,7 +19,7 @@ $VERSION='0.1';
 sub public {
 	my ($server,$msg,$nick,$address,$target)=@_;
 
-	if($msg=~/^\.h[elp]?/) {
+	if($msg=~/^\.h[elp]?/i) {
 		$server->command('/MSG '.$target.' Owner: I serve the lab. List of commands: .help, .topic, .weather');
 		$server->command('/MSG '.$target.' Help develop me @ http://github.com/wwwjscom/irc-bot/tree/master');
 	}
