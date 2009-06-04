@@ -1,6 +1,6 @@
 # Framework taken from someone else
 use Irssi;
-use strict;
+#use strict;
 use vars qw($VERSION %IRSSI);
 
 use LWP::Simple;
@@ -15,19 +15,43 @@ $VERSION='0.1';
 	url         =>  'http://jk0.org/projects/irssi-scripts/'
 );
 
+$allow_others = 'true';
 
 sub public {
 	my ($server,$msg,$nick,$address,$target)=@_;
 
 	if($msg=~/^\.h[elp]?/i) {
-		$server->command('/MSG '.$target.' Owner: I serve the lab. List of commands: .help, .topic, .weather');
+		$server->command('/MSG '.$target.' Owner: I serve the lab. List of commands: .help, .topic, .weather, .version, .allow');
 		$server->command('/MSG '.$target.' Help develop me @ http://github.com/wwwjscom/irc-bot/tree/master');
 	}
 	elsif ($msg =~ /^\.topic (.+)/i)
 	{
-		my $date = `date +"%k:%m %x"`;
-		$server->command('/topic '.$target.' "'. $1 . '" by ' . $nick . ' on ' . $date . '. Set the topic with ".topic"');
+		my($tmp) = $1;
+		#if($nick =~ /whois/) {
+		#if($nick =~ /^wwwjscom$/ || $nick =~ /^djkthx$/ || $nick =~ /^kungfooguru$/ || $nick =~ /^diginux$/ || $allow_others == 'true') {
+		#if($nick =~ /^wwwjscom$/ || $nick =~ /^djkthx$/ || $nick =~ /^kungfooguru$/ || $nick =~ /^diginux$/) {
+			my $date = `date +"%k:%m %x"`;
+			$server->command('/topic '.$target.' "'. $tmp . '" by ' . $nick . ' on ' . $date . '. Set the topic with ".topic"');
+			#} else {
+			#	$server->command('/kick ' . $target . ' ' . $nick . ' whois has a napoleon complex');
+			#}
 	}
+
+	if($msg=~/^\.allow/i) {
+		if($nick =~ /^wwwjscom$/ || $nick =~ /^djkthx$/ || $nick =~ /^kungfooguru$/ || $nick =~ /^diginux$/) {
+			if ($allow_others == 'true')
+			{
+				$allow_others = 'false';
+				$server->command('/MSG '.$target.' Disallowing others to set the topic');
+			} else {
+				$allow_others = 'true';
+				$server->command('/MSG '.$target.' Allowing others to set the topic');
+			}
+		} else {
+			$server->command('/kick ' . $target . ' ' . $nick . ' whois has a napoleon complex');
+		}
+	}
+
 
 	#if($msg =~ /sex/) {
 	#	$server->command('/MSG '.$target.' Oh yeah, talk dirty to me baby.  They dont call me squirt for no reason!');
@@ -128,6 +152,10 @@ sub public {
 		$_=get('http://rss.weather.com/weather/rss/local/60707?cm_ven=LWO&cm_cat=rss&par=LWO_rss');
 		my @array = split(/Tonight/);
 		$server->command('/MSG '.$target.' Tonight' . substr($array[1],0,-92));
+	}
+
+	if($msg =~/^\.version/) {
+		$server->command('/MSG '.$target.' 1.5');
 	}
 }
 
